@@ -9,6 +9,7 @@
     您的浏览器不支持canvas
 </canvas>
 <script>
+
     window.onload = function () {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
@@ -20,6 +21,7 @@
         context.fillStyle="black";
         context.fillRect(0,0,canvas.width,canvas.height);
 
+        //绘制200个星星
         for(var i=0;i<200;i++){
             var r=Math.random()*10+10;//生成一个10-20的随机数
             var x=Math.random()*canvas.width;
