@@ -18,17 +18,17 @@
         canvas.height = 800;
 
         //绘制背景
-        context.fillStyle="black";
-        context.fillRect(0,0,canvas.width,canvas.height);
+        context.fillStyle = "black";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         //绘制200个星星
-        for(var i=0;i<200;i++){
-            var r=Math.random()*10+10;//生成一个10-20的随机数
-            var x=Math.random()*canvas.width;
-            var y=Math.random()*canvas.height;
-            var a=Math.random()*360;
+        for (var i = 0; i < 200; i++) {
+            var r = Math.random() * 10 + 10;//生成一个10-20的随机数
+            var x = Math.random() * canvas.width;
+            var y = Math.random() * canvas.height;
+            var a = Math.random() * 360;
 
-            drawStart(context,x,y,r,r/2,a);
+            drawStar(context, x, y, r, a);
         }
 
     };
@@ -38,31 +38,50 @@
      * @param context
      * @param x 坐标位置
      * @param y
-     * @param outerR 大圆半径
-     * @param innerR 小圆半径
+     * @param R 大圆半径
      * @param rot 顺时针旋转角度，
      */
-    function drawStart(context, x, y, outerR, innerR, rot) {
+    function drawStar(context, x, y, R, rot) {
+
+        //保存当前的绘制状态
+        context.save();
+
+        //进行相应的图形变换
+        context.translate(x, y); //使用位移变换，图像的原点坐标都是（0，0），所以使用scale的时候原点坐标不会被缩放
+        context.rotate(rot / 180 * Math.PI);
+        context.scale(R, R);
+
+        //绘制一个星星
+        starPath(context);
+
+        context.fillStyle = "#fb3";
+        //context.strokeStyle = "#fb5"; //这里使用scale缩放的时候，边框的大小也会被缩放
+        //context.lineWidth = 3;
+        //context.lineJoin = "round";
+
+        context.fill();
+        //context.stroke();
+
+        //返回save时保存的状态
+        context.restore();
+
+    }
+
+    /**
+     * 绘制一个单位的star
+     * @param context
+     */
+    function starPath(context) {
         context.beginPath();
         for (var i = 0; i < 5; i++) {
             //大圆顶点
-            context.lineTo(Math.cos((18 + i * 72 - rot) / 180 * Math.PI) * outerR + x,  //这里计算方法是用逆时针的，所以这里旋转角度要用减法
-                    -Math.sin((18 + i * 72-rot) / 180 * Math.PI) * outerR + y);  //2π=360°
+            context.lineTo(Math.cos((18 + i * 72) / 180 * Math.PI),
+                    -Math.sin((18 + i * 72) / 180 * Math.PI));  //2π=360°
             //小圆顶点
-            context.lineTo(Math.cos((54 + i * 72 - rot) / 180 * Math.PI) * innerR + x,
-                    -Math.sin((54 + i * 72-rot) / 180 * Math.PI) * innerR + y);
+            context.lineTo(Math.cos((54 + i * 72 ) / 180 * Math.PI) * 0.5,
+                    -Math.sin((54 + i * 72) / 180 * Math.PI) * 0.5);
         }
         context.closePath();
-
-        context.fillStyle = "#fb3";
-        context.strokeStyle = "#fb5";
-        context.lineWidth = 3;
-        context.lineJoin = "round";
-
-        context.fill();
-        context.stroke();
-
-
     }
 </script>
 </body>
