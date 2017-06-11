@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Starry Sky</title>
+</head>
+<body>
+<canvas id="canvas" style="display: block;margin: 0 auto;border:1px solid #aaa">
+    您的浏览器不支持canvas
+</canvas>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        canvas.width = 800;
+        canvas.height = 800;
+
+        //绘制背景
+        context.fillStyle="black";
+        context.fillRect(0,0,canvas.width,canvas.height);
+
+        for(var i=0;i<200;i++){
+            var r=Math.random()*10+10;//生成一个10-20的随机数
+            var x=Math.random()*canvas.width;
+            var y=Math.random()*canvas.height;
+            var a=Math.random()*360;
+
+            drawStart(context,x,y,r,r/2,a);
+        }
+
+    };
+
+    /**
+     * 绘制一个五角星
+     * @param context
+     * @param x 坐标位置
+     * @param y
+     * @param outerR 大圆半径
+     * @param innerR 小圆半径
+     * @param rot 顺时针旋转角度，
+     */
+    function drawStart(context, x, y, outerR, innerR, rot) {
+        context.beginPath();
+        for (var i = 0; i < 5; i++) {
+            //大圆顶点
+            context.lineTo(Math.cos((18 + i * 72 - rot) / 180 * Math.PI) * outerR + x,  //这里计算方法是用逆时针的，所以这里旋转角度要用减法
+                    -Math.sin((18 + i * 72-rot) / 180 * Math.PI) * outerR + y);  //2π=360°
+            //小圆顶点
+            context.lineTo(Math.cos((54 + i * 72 - rot) / 180 * Math.PI) * innerR + x,
+                    -Math.sin((54 + i * 72-rot) / 180 * Math.PI) * innerR + y);
+        }
+        context.closePath();
+
+        context.fillStyle = "#fb3";
+        context.strokeStyle = "#fb5";
+        context.lineWidth = 3;
+        context.lineJoin = "round";
+
+        context.fill();
+        context.stroke();
+
+
+    }
+</script>
+</body>
+</html>
