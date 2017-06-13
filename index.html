@@ -14,18 +14,21 @@
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
 
-        canvas.width = 800;
+        canvas.width = 1200;
         canvas.height = 800;
 
         //绘制背景
-        context.fillStyle = "black";
+        var skystyle = context.createLinearGradient(0, 0, 0, canvas.height);
+        skystyle.addColorStop(0.0, 'black');
+        skystyle.addColorStop(1.0, '#035');
+        context.fillStyle = skystyle;
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         //绘制200个星星
         for (var i = 0; i < 200; i++) {
-            var r = Math.random() * 10 + 10;//生成一个10-20的随机数
+            var r = Math.random() * 5 + 5;//生成一个10-20的随机数
             var x = Math.random() * canvas.width;
-            var y = Math.random() * canvas.height;
+            var y = Math.random() * canvas.height * 0.65;//地面没有星星
             var a = Math.random() * 360;
 
             drawStar(context, x, y, r, a);
